@@ -453,33 +453,77 @@
         }
         
         function updateMockAPI(bookingRef, seat) {
-            const mockApiUrl = 'https://691d87c7d58e64bf0d36832c.mockapi.io/passengers';
+            const mockApiUrl = 'https://691d87c7d58e64bf0d36832c.mockapi.io/FlightDetails';
             
-            fetch(mockApiUrl + '?bookingReference=' + bookingRef)
-                .then(response => response.json())
-                .then(passengers => {
-                    if (passengers && passengers.length > 0) {
-                        const passenger = passengers[0];
+            console.log('Attempting to update MockAPI...');
+            console.log('Booking Reference:', bookingRef);
+            console.log('Selected Seat:', seat);
+            
+            // STEP 1: Fetch all passengers
+            fetch(mockApiUrl)
+                .then(response => {
+                    console.log('Fetch response status:', response.status);
+                    return response.json();
+                })
+                .then(allPassengers => {
+                    console.log('All passengers:', allPassengers);
+                    
+                    // STEP 2: Find passenger with matching booking reference
+                    const passenger = allPassengers.find(p => p.bookingReference === bookingRef);
+                    
+                    if (passenger) {
+                        console.log('Found passenger:', passenger);
                         const passengerId = passenger.id;
                         
+                        // STEP 3: Prepare updated data
+                        const updatedData = {
+                            bookingReference: passenger.bookingReference,
+                            firstName: passenger.firstName,
+                            lastName: passenger.lastName,
+                            title: passenger.title,
+                            idNumber: passenger.idNumber,
+                            email: passenger.email,
+                            phone: passenger.phone,
+                            flightNumber: passenger.flightNumber,
+                            airline: passenger.airline,
+                            origin: passenger.origin,
+                            destination: passenger.destination,
+                            originName: passenger.originName,
+                            destinationName: passenger.destinationName,
+                            departureDate: passenger.departureDate,
+                            departureTime: passenger.departureTime,
+                            arrivalTime: passenger.arrivalTime,
+                            terminal: passenger.terminal,
+                            gate: passenger.gate,
+                            bookingClass: passenger.bookingClass,
+                            seatNumber: seat,
+                            checkedIn: true,
+                            boardingPassNumber: passenger.boardingPassNumber,
+                            checkinTime: new Date().toISOString(),
+                            baggageAllowance: passenger.baggageAllowance,
+                            status: passenger.status
+                        };
+                        
+                        console.log('Updating with data:', updatedData);
+                        
+                        // STEP 4: Update the passenger
                         return fetch(mockApiUrl + '/' + passengerId, {
                             method: 'PUT',
                             headers: {
                                 'Content-Type': 'application/json',
                             },
-                            body: JSON.stringify({
-                                ...passenger,
-                                seatNumber: seat,
-                                checkedIn: true,
-                                checkinTime: new Date().toISOString()
-                            })
+                            body: JSON.stringify(updatedData)
                         });
                     } else {
-                        throw new Error('Passenger not found');
+                        throw new Error('Passenger not found with booking reference: ' + bookingRef);
                     }
                 })
-                .then(response => response.json())
+                .then(response => {
+                    console.log('Update response status:', response.status);
+                    return response.json();
+                })
                 .then(data => {
+                    console.log('Update successful:', data);
                     const successMsg = document.getElementById('successMessage');
                     successMsg.innerHTML = '✅ Seat ' + seat + ' confirmed!<br><br>' +
                                           '📱 Return to the chat and type <strong>"done"</strong> to continue.';
@@ -490,7 +534,7 @@
                     }, 5000);
                 })
                 .catch(error => {
-                    console.error('Error:', error);
+                    console.error('Error details:', error);
                     const errorMsg = document.getElementById('errorMessage');
                     errorMsg.innerHTML = '❌ Could not confirm seat with system.<br>Please return to chat and type: <strong>done ' + seat + '</strong>';
                     errorMsg.style.display = 'block';
