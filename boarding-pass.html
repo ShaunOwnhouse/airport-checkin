@@ -285,14 +285,19 @@
         document.getElementById('bpNumber').textContent = urlParams.get('bpNumber') || '-';
         
         const route = urlParams.get('route') || '-';
-        const [from, to] = route.split('-');
-        document.getElementById('fromCode').textContent = from || '-';
-        document.getElementById('toCode').textContent = to || '-';
+        const routeParts = route.split('-');
+        const from = routeParts[0] || '-';
+        const to = routeParts[routeParts.length - 1] || '-';
+        
+        document.getElementById('fromCode').textContent = from;
+        document.getElementById('toCode').textContent = to;
         
         const airportNames = {
             'JNB': 'Johannesburg',
+            'Johannesburg': 'Johannesburg',
             'CPT': 'Cape Town',
             'DUR': 'Durban',
+            'Durban': 'Durban',
             'PLZ': 'Port Elizabeth',
             'LHR': 'London',
             'DXB': 'Dubai'
@@ -314,22 +319,3 @@
     </script>
 </body>
 </html>
-```
-
----
-
-# **Upload Instructions:**
-
-1. In your GitHub repository, click **Add file** → **Create new file**
-2. File name: `boarding-pass.html`
-3. **Paste the entire code above**
-4. Click **Commit changes**
-
----
-
-# **After Upload:**
-
-Once both files are uploaded and GitHub Pages is enabled (takes 1-2 minutes), your URLs will be:
-```
-https://[your-username].github.io/airport-checkin/seat-selection.html
-https://[your-username].github.io/airport-checkin/boarding-pass.html
