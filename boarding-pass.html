@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boarding Pass</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .boarding-pass {
+            background: white;
+            width: 100%;
+            max-width: 800px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .airline-logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .boarding-pass-title {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .passenger-info {
+            margin-bottom: 30px;
+        }
+        
+        .label {
+            font-size: 11px;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+        
+        .value {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 15px;
+        }
+        
+        .value.large {
+            font-size: 28px;
+            color: #667eea;
+        }
+        
+        .route {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 30px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+        
+        .airport {
+            text-align: center;
+        }
+        
+        .airport-code {
+            font-size: 36px;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .airport-name {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .plane-icon {
+            font-size: 30px;
+            color: #764ba2;
+        }
+        
+        .flight-details {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .barcode {
+            width: 100%;
+            height: 80px;
+            background: repeating-linear-gradient(
+                90deg,
+                #000 0px,
+                #000 2px,
+                #fff 2px,
+                #fff 4px
+            );
+            margin: 20px 0;
+        }
+        
+        .footer {
+            background: #f8f9fa;
+            padding: 20px 30px;
+            border-top: 1px solid #ddd;
+        }
+        
+        .important-info {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .info-item {
+            text-align: center;
+        }
+        
+        .info-icon {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+        
+        .info-text {
+            font-size: 11px;
+            color: #666;
+        }
+        
+        .buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #5568d3;
+        }
+        
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .buttons {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="boarding-pass">
+        <div class="header">
+            <div class="airline-logo">✈️ <span id="airline">Airline</span></div>
+            <div class="boarding-pass-title">Boarding Pass</div>
+        </div>
+        
+        <div class="content">
+            <div class="passenger-info">
+                <div class="label">Passenger Name</div>
+                <div class="value large" id="passengerName">-</div>
+            </div>
+            
+            <div class="route">
+                <div class="airport">
+                    <div class="airport-code" id="fromCode">-</div>
+                    <div class="airport-name" id="fromName">Origin</div>
+                </div>
+                <div class="plane-icon">✈️</div>
+                <div class="airport">
+                    <div class="airport-code" id="toCode">-</div>
+                    <div class="airport-name" id="toName">Destination</div>
+                </div>
+            </div>
+            
+            <div class="flight-details">
+                <div>
+                    <div class="label">Flight</div>
+                    <div class="value" id="flightNumber">-</div>
+                </div>
+                <div>
+                    <div class="label">Date</div>
+                    <div class="value" id="flightDate">-</div>
+                </div>
+                <div>
+                    <div class="label">Departure</div>
+                    <div class="value" id="departureTime">-</div>
+                </div>
+                <div>
+                    <div class="label">Gate</div>
+                    <div class="value" id="gate">-</div>
+                </div>
+                <div>
+                    <div class="label">Seat</div>
+                    <div class="value" id="seatNumber">-</div>
+                </div>
+                <div>
+                    <div class="label">Terminal</div>
+                    <div class="value" id="terminal">-</div>
+                </div>
+            </div>
+            
+            <div class="barcode"></div>
+            
+            <div style="text-align: center; color: #666; font-size: 12px;">
+                Boarding Pass: <span id="bpNumber">-</span>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <div class="important-info">
+                <div class="info-item">
+                    <div class="info-icon">🎫</div>
+                    <div class="info-text">Boarding closes<br>30 minutes before departure</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-icon">🆔</div>
+                    <div class="info-text">ID document required<br>for boarding</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-icon">🧳</div>
+                    <div class="info-text" id="baggageInfo">-</div>
+                </div>
+            </div>
+            
+            <div class="buttons">
+                <button class="btn btn-primary" onclick="window.print()">🖨️ Print Boarding Pass</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        
+        document.getElementById('passengerName').textContent = (urlParams.get('passenger') || 'Passenger').toUpperCase();
+        document.getElementById('flightNumber').textContent = urlParams.get('flight') || '-';
+        document.getElementById('airline').textContent = urlParams.get('airline') || 'Airline';
+        document.getElementById('seatNumber').textContent = urlParams.get('seat') || '-';
+        document.getElementById('gate').textContent = urlParams.get('gate') || '-';
+        document.getElementById('terminal').textContent = urlParams.get('terminal') || '-';
+        document.getElementById('bpNumber').textContent = urlParams.get('bpNumber') || '-';
+        
+        const route = urlParams.get('route') || '-';
+        const [from, to] = route.split('-');
+        document.getElementById('fromCode').textContent = from || '-';
+        document.getElementById('toCode').textContent = to || '-';
+        
+        const airportNames = {
+            'JNB': 'Johannesburg',
+            'CPT': 'Cape Town',
+            'DUR': 'Durban',
+            'PLZ': 'Port Elizabeth',
+            'LHR': 'London',
+            'DXB': 'Dubai'
+        };
+        document.getElementById('fromName').textContent = airportNames[from] || from || 'Origin';
+        document.getElementById('toName').textContent = airportNames[to] || to || 'Destination';
+        
+        const departureDateTime = urlParams.get('departure') || '';
+        const parts = departureDateTime.split(' ');
+        document.getElementById('flightDate').textContent = parts[0] || '-';
+        document.getElementById('departureTime').textContent = parts[1] || '-';
+        
+        const bags = parseInt(urlParams.get('bags')) || 0;
+        if (bags === 0) {
+            document.getElementById('baggageInfo').innerHTML = 'Carry-on only';
+        } else {
+            document.getElementById('baggageInfo').innerHTML = bags + ' checked bag' + (bags > 1 ? 's' : '');
+        }
+    </script>
+</body>
+</html>
+```
+
+---
+
+# **Upload Instructions:**
+
+1. In your GitHub repository, click **Add file** → **Create new file**
+2. File name: `boarding-pass.html`
+3. **Paste the entire code above**
+4. Click **Commit changes**
+
+---
+
+# **After Upload:**
+
+Once both files are uploaded and GitHub Pages is enabled (takes 1-2 minutes), your URLs will be:
+```
+https://[your-username].github.io/airport-checkin/seat-selection.html
+https://[your-username].github.io/airport-checkin/boarding-pass.html
