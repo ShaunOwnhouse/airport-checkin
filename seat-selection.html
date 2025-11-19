@@ -19,11 +19,11 @@
         }
         
         .container {
-            max-width: 900px;
+            max-width: 1200px;
             margin: 0 auto;
             background: white;
             border-radius: 15px;
-            padding: 30px;
+            padding: 40px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
         }
         
@@ -36,13 +36,13 @@
         
         .header h1 {
             color: #333;
-            font-size: 28px;
+            font-size: 32px;
             margin-bottom: 10px;
         }
         
         .flight-info {
             background: #f8f9fa;
-            padding: 15px;
+            padding: 20px;
             border-radius: 8px;
             margin-bottom: 20px;
         }
@@ -50,20 +50,21 @@
         .flight-info p {
             margin: 5px 0;
             color: #555;
+            font-size: 16px;
         }
         
         .plane {
             background: #f0f0f0;
             border-radius: 20px;
-            padding: 30px 20px;
+            padding: 40px 30px;
             position: relative;
         }
         
         .cockpit {
-            width: 100px;
-            height: 80px;
+            width: 120px;
+            height: 100px;
             background: #667eea;
-            margin: 0 auto 30px;
+            margin: 0 auto 40px;
             border-radius: 50% 50% 0 0;
             position: relative;
         }
@@ -74,7 +75,7 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 30px;
+            font-size: 40px;
             color: white;
         }
         
@@ -82,32 +83,32 @@
             text-align: center;
             font-weight: bold;
             color: #667eea;
-            margin: 20px 0 10px;
-            font-size: 16px;
+            margin: 20px 0 20px;
+            font-size: 20px;
         }
         
         .row {
             display: flex;
             justify-content: center;
-            margin: 8px 0;
-            gap: 10px;
+            margin: 10px 0;
+            gap: 12px;
             position: relative;
         }
         
         .row.emergency-exit {
             border: 2px solid #f44336;
             border-radius: 5px;
-            padding: 5px;
-            margin: 15px 0;
+            padding: 8px;
+            margin: 20px 0;
             background: #ffebee;
         }
         
         .exit-label {
             position: absolute;
-            left: -80px;
+            left: -90px;
             top: 50%;
             transform: translateY(-50%);
-            font-size: 10px;
+            font-size: 12px;
             color: #f44336;
             font-weight: bold;
             display: flex;
@@ -117,25 +118,26 @@
         
         .exit-label::before {
             content: '🚪';
-            font-size: 16px;
+            font-size: 18px;
         }
         
         .row-number {
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 40px;
+            width: 50px;
             font-weight: bold;
             color: #666;
+            font-size: 16px;
         }
         
         .seats-left, .seats-right {
             display: flex;
-            gap: 8px;
+            gap: 10px;
         }
         
         .aisle {
-            width: 40px;
+            width: 50px;
             position: relative;
             display: flex;
             align-items: center;
@@ -144,7 +146,7 @@
         
         .aisle::after {
             content: 'AISLE';
-            font-size: 8px;
+            font-size: 10px;
             color: #999;
             writing-mode: vertical-rl;
             text-orientation: mixed;
@@ -152,8 +154,8 @@
         }
         
         .seat {
-            width: 45px;
-            height: 45px;
+            width: 55px;
+            height: 55px;
             border: 2px solid #ddd;
             border-radius: 8px;
             background: #4CAF50;
@@ -161,7 +163,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 12px;
+            font-size: 14px;
             color: white;
             font-weight: bold;
             transition: all 0.3s ease;
@@ -171,8 +173,8 @@
         .seat.window::before {
             content: '🪟';
             position: absolute;
-            top: -18px;
-            font-size: 14px;
+            top: -20px;
+            font-size: 16px;
         }
         
         .seat:hover:not(.occupied):not(.selected) {
@@ -195,7 +197,7 @@
         .legend {
             display: flex;
             justify-content: center;
-            gap: 20px;
+            gap: 25px;
             margin: 30px 0 20px;
             flex-wrap: wrap;
         }
@@ -204,30 +206,31 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            font-size: 14px;
+            font-size: 16px;
         }
         
         .legend-box {
-            width: 30px;
-            height: 30px;
+            width: 35px;
+            height: 35px;
             border-radius: 5px;
         }
         
         .selected-info {
             background: #e3f2fd;
-            padding: 20px;
+            padding: 25px;
             border-radius: 8px;
-            margin-top: 20px;
+            margin-top: 30px;
             text-align: center;
         }
         
         .selected-info h3 {
             color: #1976d2;
             margin-bottom: 10px;
+            font-size: 24px;
         }
         
         .selected-info p {
-            font-size: 18px;
+            font-size: 20px;
             color: #333;
             margin: 5px 0;
         }
@@ -236,16 +239,27 @@
             background: #4CAF50;
             color: white;
             border: none;
-            padding: 15px 40px;
-            font-size: 18px;
+            padding: 18px 50px;
+            font-size: 20px;
             border-radius: 8px;
             cursor: pointer;
-            margin-top: 15px;
+            margin-top: 20px;
             transition: background 0.3s;
         }
         
         .btn-confirm:hover {
             background: #45a049;
+        }
+        
+        .success-message {
+            display: none;
+            background: #4CAF50;
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            text-align: center;
+            font-size: 18px;
         }
     </style>
 </head>
@@ -290,10 +304,14 @@
         <div class="selected-info" id="selectedInfo" style="display: none;">
             <h3>Selected Seat</h3>
             <p id="selectedSeat">-</p>
-            <p id="seatType" style="font-size: 14px; color: #666;"></p>
+            <p id="seatType" style="font-size: 16px; color: #666;"></p>
             <button class="btn-confirm" onclick="confirmSelection()">
                 Confirm Seat Selection
             </button>
+        </div>
+        
+        <div class="success-message" id="successMessage">
+            ✅ Thanks! You can now return to the chat.
         </div>
     </div>
 
@@ -385,8 +403,8 @@
             
             let seatTypeDesc = [];
             if (isWindow) seatTypeDesc.push('Window Seat');
-            if (!isWindow && seatId.includes('B') || seatId.includes('E')) seatTypeDesc.push('Aisle Seat');
-            if (!isWindow && seatId.includes('C') || seatId.includes('D')) seatTypeDesc.push('Middle Seat');
+            if (!isWindow && (seatId.includes('B') || seatId.includes('E'))) seatTypeDesc.push('Aisle Seat');
+            if (!isWindow && (seatId.includes('C') || seatId.includes('D'))) seatTypeDesc.push('Middle Seat');
             if (isEmergencyExit) seatTypeDesc.push('Emergency Exit Row (Extra Legroom)');
             
             selectedSeatType = seatTypeDesc.join(' • ');
@@ -395,6 +413,8 @@
             selectedInfo.style.display = 'block';
             document.getElementById('selectedSeat').textContent = 'Seat ' + seatId;
             document.getElementById('seatType').textContent = selectedSeatType;
+            
+            document.getElementById('successMessage').style.display = 'none';
         }
         
         function confirmSelection() {
@@ -403,7 +423,12 @@
                 return;
             }
             
-            alert('✅ Seat ' + selectedSeat + ' confirmed!\n' + selectedSeatType + '\n\nYou can now return to the chat and type "done" to continue.');
+            document.getElementById('selectedInfo').style.display = 'none';
+            document.getElementById('successMessage').style.display = 'block';
+            
+            setTimeout(() => {
+                document.getElementById('successMessage').scrollIntoView({ behavior: 'smooth' });
+            }, 100);
         }
     </script>
 </body>
