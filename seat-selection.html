@@ -251,6 +251,11 @@
             background: #45a049;
         }
         
+        .btn-confirm:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        
         .success-message {
             display: none;
             background: #4CAF50;
@@ -263,13 +268,14 @@
             line-height: 1.6;
         }
         
-        .success-message strong {
-            font-size: 24px;
-            display: block;
-            margin: 15px 0;
-            padding: 15px;
-            background: rgba(255,255,255,0.2);
+        .error-message {
+            display: none;
+            background: #f44336;
+            color: white;
+            padding: 20px;
             border-radius: 8px;
+            margin-top: 20px;
+            text-align: center;
         }
     </style>
 </head>
@@ -315,12 +321,13 @@
             <h3>Selected Seat</h3>
             <p id="selectedSeat">-</p>
             <p id="seatType" style="font-size: 16px; color: #666;"></p>
-            <button class="btn-confirm" onclick="confirmSelection()">
+            <button class="btn-confirm" id="confirmBtn" onclick="confirmSelection()">
                 Confirm Seat Selection
             </button>
         </div>
         
         <div class="success-message" id="successMessage"></div>
+        <div class="error-message" id="errorMessage"></div>
     </div>
 
     <script>
@@ -328,6 +335,7 @@
         const passenger = urlParams.get('passenger') || 'Passenger';
         const flight = urlParams.get('flight') || 'Flight';
         const route = urlParams.get('route') || 'Route';
+        const booking = urlParams.get('booking') || '';
         
         document.getElementById('flightNumber').textContent = flight;
         document.getElementById('route').textContent = route;
@@ -423,6 +431,7 @@
             document.getElementById('seatType').textContent = selectedSeatType;
             
             document.getElementById('successMessage').style.display = 'none';
+            document.getElementById('errorMessage').style.display = 'none';
         }
         
         function confirmSelection() {
@@ -431,17 +440,66 @@
                 return;
             }
             
+            const confirmBtn = document.getElementById('confirmBtn');
+            confirmBtn.disabled = true;
+            confirmBtn.textContent = 'Confirming...';
+            
             document.getElementById('selectedInfo').style.display = 'none';
             const successMsg = document.getElementById('successMessage');
-            successMsg.innerHTML = '✅ Seat ' + selectedSeat + ' confirmed!<br><br>' +
-                                   '📱 <strong>Return to the chat and type:</strong>' +
-                                   '<strong>done ' + selectedSeat + '</strong><br><br>' +
-                                   'Example: <em>done ' + selectedSeat + '</em>';
+            successMsg.innerHTML = '⏳ Confirming seat ' + selectedSeat + '...';
             successMsg.style.display = 'block';
             
-            setTimeout(() => {
-                successMsg.scrollIntoView({ behavior: 'smooth' });
-            }, 100);
+            updateMockAPI(booking, selectedSeat);
+        }
+        
+        function updateMockAPI(bookingRef, seat) {
+            const mockApiUrl = 'https://691d87c7d58e64bf0d36832c.mockapi.io/passengers';
+            
+            fetch(mockApiUrl + '?bookingReference=' + bookingRef)
+                .then(response => response.json())
+                .then(passengers => {
+                    if (passengers && passengers.length > 0) {
+                        const passenger = passengers[0];
+                        const passengerId = passenger.id;
+                        
+                        return fetch(mockApiUrl + '/' + passengerId, {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                ...passenger,
+                                seatNumber: seat,
+                                checkedIn: true,
+                                checkinTime: new Date().toISOString()
+                            })
+                        });
+                    } else {
+                        throw new Error('Passenger not found');
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    const successMsg = document.getElementById('successMessage');
+                    successMsg.innerHTML = '✅ Seat ' + seat + ' confirmed!<br><br>' +
+                                          '📱 Return to the chat and type <strong>"done"</strong> to continue.';
+                    successMsg.style.display = 'block';
+                    
+                    setTimeout(() => {
+                        window.close();
+                    }, 5000);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    const errorMsg = document.getElementById('errorMessage');
+                    errorMsg.innerHTML = '❌ Could not confirm seat with system.<br>Please return to chat and type: <strong>done ' + seat + '</strong>';
+                    errorMsg.style.display = 'block';
+                    document.getElementById('successMessage').style.display = 'none';
+                    
+                    const confirmBtn = document.getElementById('confirmBtn');
+                    confirmBtn.disabled = false;
+                    confirmBtn.textContent = 'Confirm Seat Selection';
+                });
         }
     </script>
 </body>
